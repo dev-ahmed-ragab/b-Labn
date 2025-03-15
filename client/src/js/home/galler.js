@@ -10,22 +10,22 @@ export default () => /*html*/ `
 
       <!-- صورة 2 (نصف الشاشة) -->
       <div class="col-span-1">
-        <img src="/public/assets/images/img-2.jpg" alt="صورة متوسطة" class="w-full h-auto rounded-lg shadow-md object-cover">
+        <img src="/assets/images/img-2.jpg" alt="صورة متوسطة" class="w-full h-auto rounded-lg shadow-md object-cover">
       </div>
 
       <!-- صورة 3 (نصف الشاشة) -->
       <div class="col-span-1">
-        <img src="/public/assets/images/img-9.jpg" alt="صورة متوسطة" class="w-full h-auto rounded-lg shadow-md object-cover">
+        <img src="/assets/images/img-9.jpg" alt="صورة متوسطة" class="w-full h-auto rounded-lg shadow-md object-cover">
       </div>
 
       <!-- صورة 4 (ربع الشاشة) -->
       <div class="col-span-1 md:col-span-1 lg:col-span-1">
-        <img src="/public/assets/images/img-4.jpg" alt="صورة صغيرة" class="w-full h-auto rounded-lg shadow-md object-cover">
+        <img src="/assets/images/img-4.jpg" alt="صورة صغيرة" class="w-full h-auto rounded-lg shadow-md object-cover">
       </div>
 
       <!-- صورة 5 (ربع الشاشة) -->
       <div class="col-span-1 md:col-span-1 lg:col-span-1">
-        <img src="/public/assets/images/img-5.jpg" alt="صورة صغيرة" class="w-full h-auto rounded-lg shadow-md object-cover">
+        <img src="/assets/images/img-5.jpg" alt="صورة صغيرة" class="w-full h-auto rounded-lg shadow-md object-cover">
       </div>
     </div>
   </div>

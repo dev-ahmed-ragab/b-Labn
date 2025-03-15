@@ -3,7 +3,7 @@ export default () => /*html*/ `
   <!-- الصورة في الخلفية -->
   <div
     class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-    style="background-image: url('/public/assets/images/img-16.jpg');"
+    style="background-image: url('/assets/images/img-16.jpg');"
   ></div>
 
   <!-- التظليل للنص -->

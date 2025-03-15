@@ -28,7 +28,7 @@ export default () => /*html*/ `
       <!-- الصورة -->
       <div class="relative overflow-hidden rounded-lg shadow-lg">
         <img
-          src="/public/assets/images/img-10.jpg"
+          src="/assets/images/img-10.jpg"
           alt="قصة بلابن مصر"
           class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-500"
         />

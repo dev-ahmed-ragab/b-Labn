@@ -1,6 +1,6 @@
 export default () => /*html*/ `
   <section id="hero" class="relative h-screen bg-cover bg-center flex items-center justify-center text-white"
-style="background-image: url('/public/assets/images/img-12.jpg');"    >
+style="background-image: url('/assets/images/img-12.jpg');"    >
     <!-- غشاء داكن فوق الصورة -->
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <!-- محتوى في المنتصف -->
