@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" crossorigin src="/assets/index.424811e3.js"></script>
+    <link rel="stylesheet" href="/assets/index.db66d5eb.css">
+  </head>
+  <body>
+    <!-- شريط التنقل -->
+    <nav class="bg-white shadow-md">
+      <div
+        class="container mx-auto px-4 flex justify-between items-center py-4"
+      >
+        <!-- الشعار (Logo) -->
+        <div class="flex items-center">
+          <img
+            src="/assets/logo.faf235ea.jpg"
+            alt="Brand Logo"
+            class="w-10 h-10 rounded-full"
+          />
+        </div>
+
+        <!-- روابط التنقل -->
+        <div class="hidden md:flex space-x-6">
+          <a
+            href="/"
+            class="text-gray-700 hover:text-blue-500 transition duration-300"
+            data-link
+            >Home</a
+          >
+          <a
+            href="/about"
+            class="text-gray-700 hover:text-blue-500 transition duration-300"
+            data-link
+            >About</a
+          >
+          <a
+            href="/menu"
+            class="text-gray-700 hover:text-blue-500 transition duration-300"
+            data-link
+            >Menu</a
+          >
+          <a
+            href="/contact"
+            class="text-gray-700 hover:text-blue-500 transition duration-300"
+            data-link
+            >Contact</a
+          >
+        </div>
+
+        <!-- الأيقونات (تسجيل الدخول، السلة، المفضلة، لوحة التحكم) -->
+        <div class="hidden md:flex flex-row items-center space-x-4">
+          <!-- إذا كان المستخدم مسجلًا (يوجد token) -->
+          <div id="logged-in-icons" class="hidden md:flex flex-row">
+            <a
+              href="/cart"
+              class="text-gray-700 hover:text-blue-500 transition duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+            </a>
+            <a
+              href="/favorites"
+              class="text-gray-700 hover:text-blue-500 transition duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </a>
+            <a
+              href="/dashboard"
+              class="text-gray-700 hover:text-blue-500 transition duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </a>
+            <a
+              href="#"
+              id="logout-btn"
+              class="text-gray-700 hover:text-blue-500 transition duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <!-- إذا لم يكن المستخدم مسجلًا (لا يوجد token) -->
+          <div id="logged-out-icons" class="hidden">
+            <a
+              href="/login"
+              class="text-gray-700 hover:text-blue-500 transition duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- زر القائمة (للشاشات الصغيرة) -->
+        <button id="menu-btn" class="md:hidden block focus:outline-none">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-gray-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- قائمة التنقل المخفية (تظهر عند النقر على الزر) -->
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white shadow-lg mt-2 py-4 px-4 z-50"
+      >
+        <a
+          href="/"
+          class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          data-link
+          >Home</a
+        >
+        <a
+          href="/about"
+          class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          data-link
+          >About</a
+        >
+        <a
+          href="/menu"
+          class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          data-link
+          >Menu</a
+        >
+        <a
+          href="/contact"
+          class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          data-link
+          >Contact</a
+        >
+        <!-- إذا كان المستخدم مسجلًا (يوجد token) -->
+        <div id="mobile-logged-in-icons" class="hidden">
+          <a
+            href="/cart"
+            class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+            </svg>
+          </a>
+          <a
+            href="/favorites"
+            class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>
+          </a>
+          <a
+            href="/dashboard"
+            class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </a>
+          <a
+            href="#"
+            id="mobile-logout-btn"
+            class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+          </a>
+        </div>
+
+        <div id="mobile-logged-out-icons" class="hidden">
+          <a
+            href="/login"
+            class="block text-gray-700 hover:text-blue-500 transition duration-300 mb-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      // التحقق من وجود token في localStorage
+      const token = localStorage.getItem('token');
+
+      // تحديد العناصر التي سيتم التحكم فيها
+      const loggedInIcons = document.getElementById('logged-in-icons');
+      const loggedOutIcons = document.getElementById('logged-out-icons');
+      const mobileLoggedInIcons = document.getElementById(
+        'mobile-logged-in-icons'
+      );
+      const mobileLoggedOutIcons = document.getElementById(
+        'mobile-logged-out-icons'
+      );
+      const logoutBtn = document.getElementById('logout-btn');
+      const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+      // دالة لإظهار أيقونات تسجيل الدخول وإخفاء أيقونات تسجيل الخروج
+      function showLoginIcons() {
+        loggedInIcons.classList.add('hidden');
+        loggedOutIcons.classList.remove('hidden');
+        mobileLoggedInIcons.classList.add('hidden');
+        mobileLoggedOutIcons.classList.remove('hidden');
+      }
+
+      // دالة لإظهار أيقونات تسجيل الخروج وإخفاء أيقونات تسجيل الدخول
+      function showLogoutIcons() {
+        loggedInIcons.classList.remove('hidden');
+        loggedOutIcons.classList.add('hidden');
+        mobileLoggedInIcons.classList.remove('hidden');
+        mobileLoggedOutIcons.classList.add('hidden');
+      }
+
+      // التحقق من حالة تسجيل الدخول
+      if (token) {
+        showLogoutIcons();
+      } else {
+        showLoginIcons();
+      }
+
+      // تسجيل الخروج
+      function logout() {
+        localStorage.removeItem('token'); // حذف token
+        showLoginIcons(); // تحديث الأيقونات
+        alert('تم تسجيل الخروج بنجاح.');
+      }
+
+      // إضافة حدث لزر تسجيل الخروج
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+      }
+      if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', logout);
+      }
+    </script>
+
+    <!-- JavaScript لتشغيل زر القائمة -->
+
+    <main id="app"></main>
+
+    <footer class="bg-gray-700 text-white py-12">
+      <div class="container mx-auto px-4">
+        <!-- تقسيم التذييل إلى أعمدة -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- العمود الأول: معلومات التواصل -->
+          <div>
+            <h3 class="text-2xl font-bold mb-4">تواصل معنا</h3>
+            <p class="text-gray-300 mb-2">📞 الهاتف: 9200XXXXXX</p>
+            <p class="text-gray-300 mb-2">
+              📧 البريد الإلكتروني: info@halawiyatna.com
+            </p>
+            <p class="text-gray-300">
+              📍 العنوان: الرياض، المملكة العربية السعودية
+            </p>
+          </div>
+
+          <!-- العمود الثاني: روابط سريعة -->
+          <div>
+            <h3 class="text-2xl font-bold mb-4">روابط سريعة</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-300 hover:text-white transition duration-300"
+                  >الرئيسية</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#menu"
+                  class="text-gray-300 hover:text-white transition duration-300"
+                  >قائمة الطعام</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  class="text-gray-300 hover:text-white transition duration-300"
+                  >عن حلوياتنا</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  class="text-gray-300 hover:text-white transition duration-300"
+                  >تواصل معنا</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- العمود الثالث: وسائل التواصل الاجتماعي -->
+          <div>
+            <h3 class="text-2xl font-bold mb-4">تابعنا</h3>
+            <div class="flex space-x-4">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                class="text-gray-300 hover:text-white transition duration-300"
+              >
+                <i class="fab fa-facebook-f"></i> Facebook
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                class="text-gray-300 hover:text-white transition duration-300"
+              >
+                <i class="fab fa-instagram"></i> Instagram
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                class="text-gray-300 hover:text-white transition duration-300"
+              >
+                <i class="fab fa-twitter"></i> Twitter
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- حقوق النشر -->
+        <div class="mt-8 text-center text-gray-400">
+          <p>&copy; 2023 حلوياتنا. جميع الحقوق محفوظة.</p>
+        </div>
+      </div>
+    </footer>
+
+    
+    <script src="./src/js/components/header.js"></script>
+  </body>
+</html>
