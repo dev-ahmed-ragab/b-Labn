@@ -8,16 +8,16 @@ export default () => /*html*/ `
     </div>
     <div class="gallery grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div class="gallery-item overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <img src="/public/assets/images/img-2.jpg" alt="تحضير الكيكة" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
+        <img src="/assets/images/img-2.jpg" alt="تحضير الكيكة" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
       </div>
       <div class="gallery-item overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <img src="/public/assets/images/img-5.jpg" alt="حلويات مبتكرة" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
+        <img src="/assets/images/img-5.jpg" alt="حلويات مبتكرة" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
       </div>
       <div class="gallery-item overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <img src="/public/assets/images/img-9.jpg" alt="فريق العمل" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
+        <img src="/assets/images/img-9.jpg" alt="فريق العمل" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
       </div>
       <div class="gallery-item overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-        <img src="/public/assets/images/img-8.jpg" alt="زينة المطعم" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
+        <img src="/assets/images/img-8.jpg" alt="زينة المطعم" class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300">
       </div>
     </div>
   </div>

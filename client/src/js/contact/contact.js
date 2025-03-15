@@ -13,7 +13,7 @@ export default () => /*html*/ `
       <div class="contact-methods bg-white p-8 rounded-2xl shadow-xl relative overflow-hidden">
         <!-- خلفية زخرفية -->
         <img
-          src="../../../public/assets/images/contact.png"
+          src="/assets/images/contact.png"
           alt="خلفية زخرفية"
           class="absolute inset-0 w-full h-full object-cover opacity-20"
         />
