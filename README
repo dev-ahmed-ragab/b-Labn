@@ -1,0 +1,137 @@
+# B-Labn Project
+
+## Overview
+
+B-Labn is a web application designed to provide a seamless experience for users to explore and purchase a variety of products. The project is built using a client-server architecture, with the client side developed in Vanilla JavaScript and the server side using Node.js and Express.
+
+## Project Structure
+
+```
+B-Labn/
+├── client/
+│   ├── .gitignore
+│   ├── index.html
+│   ├── package.json
+│   ├── public/
+│   │   ├── _redirects
+│   │   └── assets/
+│   │       └── images/
+│   ├── src/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   └── js/
+│   │       ├── main.js
+│   │       ├── about/
+│   │       ├── components/
+│   │       ├── contact/
+│   │       ├── home/
+│   │       ├── layer/
+│   │       └── views/
+│   └── .vscode/
+│       └── settings.json
+├── server/
+│   ├── .env
+│   ├── .gitignore
+│   ├── app.js
+│   ├── package.json
+│   ├── server.js
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── Admins.js
+│   │   ├── Product.js
+│   │   └── User.js
+│   └── routes/
+│       ├── admin.js
+│       ├── auth.js
+│       ├── product.js
+│       └── user.js
+```
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- npm (v6 or higher)
+- MongoDB
+
+## Installation
+
+1. Clone the repository:
+
+```sh
+git clone https://github.com/dev-ahmed-ragab/b-labn.git
+cd b-labn
+```
+
+2. Install dependencies for both client and server:
+
+```sh
+# Navigate to the client directory and install dependencies
+cd client
+npm install
+
+# Navigate to the server directory and install dependencies
+cd ../server
+npm install
+```
+
+## Configuration
+
+1. Create a `.env` file in the `server` directory and add the following environment variables:
+
+```
+JWT_SECRET=your_jwt_secret
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+```
+
+## Running the Application
+
+1. Start the server:
+
+```sh
+cd server
+npm start
+```
+
+2. Start the client:
+
+```sh
+cd ../client
+npm run dev
+```
+
+3. Open your browser and navigate to `http://localhost:5501` to view the application.
+
+## Scripts
+
+### Client
+
+- `npm run dev`: Start the development server using Vite.
+- `npm run build`: Build the project for production.
+- `npm run serve`: Preview the production build.
+
+### Server
+
+- `npm start`: Start the server using `nodemon` and `env-cmd`.
+
+## Features
+
+- User authentication (login and registration)
+- Product listing and details
+- Shopping cart functionality
+- Favorites management
+- Admin dashboard for managing products and users
+
+## Technologies Used
+
+- **Client**: Vanilla JavaScript, HTML, CSS, TailwindCSS
+- **Server**: Node.js, Express, MongoDB, Mongoose, JWT, bcrypt
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request for review.
+
+## License
+
+This project is licensed under the ISC License.
