@@ -8,7 +8,7 @@ export default () => /*html*/ `
     </div>
     <div class="timeline relative">
       <!-- الخط العمودي -->
-      <div class="absolute left-1/2 w-1 bg-pink-300 h-full transform -translate-x-1/2"></div>
+      <div class="absolute left-1/2 w-1 bg-[#005DA5] h-full transform -translate-x-1/2"></div>
 
       <!-- العناصر الزمنية -->
       <div class="timeline-item relative mb-8">

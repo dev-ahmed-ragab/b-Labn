@@ -69,7 +69,7 @@ export default () => /*html*/ `
   </div>
 `;
 
-const api = 'http://localhost:5000/api/auth'; // رابط الـ API الخاص بالباك اند
+const api = `${import.meta.env.VITE_BASE_URL}/api/auth`; // API endpoint for backend
 
 // دالة تبديل النماذج
 function toggleForm() {
@@ -115,6 +115,8 @@ async function loginUser() {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem('token', data.token); // تخزين الرمز في localStorage
+      localStorage.setItem('role', JSON.stringify(data.user.role)); // تخزين بيانات المستخدم
+      console.log(data.user.role);
       alert('تم تسجيل الدخول بنجاح!');
       console.log('Token:', data.token);
     } else {

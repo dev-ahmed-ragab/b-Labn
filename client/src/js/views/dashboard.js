@@ -81,7 +81,7 @@ export default () => /*html*/ `
   </div>
 `;
 
-const api = 'http://localhost:5000/api'; // رابط API الرئيسي
+const api = `${import.meta.env.VITE_BASE_URL}/api`; // Main API URL
 
 // دالة تحقق من صلاحية المستخدم
 async function checkAdmin() {

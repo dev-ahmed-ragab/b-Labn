@@ -19,11 +19,11 @@ export default () => /*html*/ `
 
 // مصفوفة لتخزين المنتجات
 let products = [];
-
+const api = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
 // جلب البيانات من الباك-إند
 async function fetchProducts() {
   try {
-    const response = await fetch('http://localhost:5000/api/product/all', {
+    const response = await fetch(`${api}/api/product/all`, {
       method: 'GET',
     });
 
