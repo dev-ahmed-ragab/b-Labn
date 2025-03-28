@@ -3,15 +3,15 @@ export default () => /*html*/ `
   <!-- تقسيم القسم إلى جزئين -->
   <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
     <!-- الجزء الأول: الفيديو -->
-    <div class="relative w-full h-96 overflow-hidden rounded-lg shadow-md">
-      <iframe 
-        src="https://www.youtube.com/embed/rNywUxeWizo?autoplay=1&mute=1&loop=1&playlist=rNywUxeWizo" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        class="w-full h-full object-cover">
-      </iframe>
-    </div>
+<div class="relative w-full h-96 overflow-hidden rounded-lg shadow-md">
+  <iframe 
+    src="https://www.youtube.com/embed/65mjILnG6i4?autoplay=1&mute=1" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen
+    class="w-full h-full">
+  </iframe>
+</div>
 
     <!-- الجزء الثاني: المحتوى -->
     <div class="text-center md:text-right">
