@@ -4,193 +4,250 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>B-Labn - بلبن</title>
+    <title>B-Labn - بلبن لأشهى الحلويات</title>
+    
+    <!-- خطوط جوجل -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Montserrat:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    
+    <!-- مكتبة الأيقونات Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
     <link rel="stylesheet" href="./src/css/style.css" />
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                primary: '#005DA5',
+                secondary: '#098AC1',
+                accent: '#EBF4F9',
+              },
+            },
+            fontFamily: {
+              sans: ['Cairo', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
     <style>
       body {
         font-family: 'Cairo', sans-serif;
       }
+      /* إخفاء شريط التمرير الأفقي غير المرغوب */
+      html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+      }
     </style>
   </head>
-  <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
-    <!-- شريط التنقل -->
-    <nav class="bg-white shadow-md sticky top-0 z-50">
-      <div class="container mx-auto px-4 flex justify-between items-center py-3.5">
+  <body class="bg-[#F8FAFC] text-gray-800 flex flex-col min-h-screen">
+    <!-- شريط التنقل المتطور والأنيق (Navbar) -->
+    <header class="bg-white/95 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+      <div class="container mx-auto px-4 flex justify-between items-center h-20">
         <!-- الشعار (Logo) -->
-        <a href="/" data-link class="flex items-center space-x-3 space-x-reverse">
+        <a href="/" data-link class="flex items-center space-x-3 space-x-reverse group">
           <img
             src="/assets/images/logo.jpg"
             alt="B-Labn Logo"
-            class="w-11 h-11 rounded-full object-cover shadow-sm border border-gray-100"
-            onerror="this.src='https://placehold.co/100x100?text=B-Labn'"
+            class="w-12 h-12 rounded-full object-cover shadow-sm border-2 border-[#005DA5]/20 group-hover:scale-105 transition duration-300"
+            onerror="this.src='https://placehold.co/100x100/005DA5/white?text=B-Labn'"
           />
-          <span class="text-2xl font-black text-[#005DA5] tracking-wide">B-Labn</span>
+          <div class="flex flex-col">
+            <span class="text-2xl font-black text-[#005DA5] tracking-tight group-hover:text-[#098AC1] transition duration-200">B-Labn</span>
+            <span class="text-[10px] text-gray-500 font-bold -mt-1 tracking-widest">أصل السعادة</span>
+          </div>
         </a>
 
         <!-- روابط التنقل الأساسية (الشاشات الكبيرة) -->
-        <div class="hidden md:flex items-center space-x-8 space-x-reverse text-base font-semibold">
-          <a href="/" data-link class="text-gray-700 hover:text-[#005DA5] transition duration-200">الرئيسية</a>
-          <a href="/menu" data-link class="text-gray-700 hover:text-[#005DA5] transition duration-200">المنيو</a>
-          <a href="/about" data-link class="text-gray-700 hover:text-[#005DA5] transition duration-200">عن المتجر</a>
-          <a href="/contact" data-link class="text-gray-700 hover:text-[#005DA5] transition duration-200">تواصل معنا</a>
-        </div>
+        <nav class="hidden md:flex items-center space-x-8 space-x-reverse text-base font-bold text-gray-700">
+          <a href="/" data-link class="hover:text-[#005DA5] transition duration-200 py-1 border-b-2 border-transparent hover:border-[#005DA5]">الرئيسية</a>
+          <a href="/menu" data-link class="hover:text-[#005DA5] transition duration-200 py-1 border-b-2 border-transparent hover:border-[#005DA5]">قائمة الحلويات</a>
+          <a href="/about" data-link class="hover:text-[#005DA5] transition duration-200 py-1 border-b-2 border-transparent hover:border-[#005DA5]">عن B-Labn</a>
+          <a href="/contact" data-link class="hover:text-[#005DA5] transition duration-200 py-1 border-b-2 border-transparent hover:border-[#005DA5]">تواصل معنا</a>
+        </nav>
 
-        <!-- الأيقونات (السلة، المفضلة، لوحة التحكم، الدخول) -->
-        <div class="hidden md:flex items-center space-x-5 space-x-reverse">
-          <!-- إذا كان المستخدم مسجلاً (يوجد token) -->
-          <div id="logged-in-icons" class="hidden flex items-center space-x-4 space-x-reverse">
-            <!-- أيقونة السلة -->
-            <a
-              href="/cart"
-              data-link
-              title="سلة المشتريات"
-              class="text-gray-600 hover:text-[#005DA5] p-2 rounded-xl hover:bg-gray-100 transition"
-            >
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </a>
+        <!-- أدوات التفاعل (السلة، المفضلة، لوحة التحكم، الحساب) -->
+        <div class="hidden md:flex items-center space-x-4 space-x-reverse">
+          <!-- أيقونة المفضلة مع عداد الـ Badge -->
+          <a
+            href="/favorites"
+            data-link
+            title="قائمة المفضلة"
+            class="relative text-gray-600 hover:text-red-500 p-2.5 rounded-full hover:bg-red-50 transition duration-200"
+          >
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <span id="favorites-badge" class="hidden absolute top-0.5 right-0.5 bg-red-500 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+          </a>
 
-            <!-- أيقونة المفضلة -->
-            <a
-              href="/favorites"
-              data-link
-              title="قائمة المفضلة"
-              class="text-gray-600 hover:text-red-500 p-2 rounded-xl hover:bg-gray-100 transition"
-            >
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </a>
+          <!-- أيقونة السلة مع عداد الـ Badge -->
+          <a
+            href="/cart"
+            data-link
+            title="سلة المشتريات"
+            class="relative text-gray-600 hover:text-[#005DA5] p-2.5 rounded-full hover:bg-blue-50 transition duration-200"
+          >
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <span id="cart-badge" class="hidden absolute top-0.5 right-0.5 bg-[#005DA5] text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+          </a>
 
-            <!-- أيقونة لوحة التحكم (للمشرفين فقط) -->
+          <div class="h-6 w-px bg-gray-200 mx-1"></div>
+
+          <!-- حالة تسجيل الدخول: تظهر عند وجود توكن -->
+          <div id="logged-in-widget" class="hidden flex items-center space-x-3 space-x-reverse">
+            <!-- زر لوحة التحكم (يظهر للمشرفين فقط) -->
             <a
               href="/dashboard"
               data-link
-              id="admin-dashboard-icon"
-              title="لوحة التحكم"
-              class="text-gray-600 hover:text-purple-600 p-2 rounded-xl hover:bg-purple-50 transition"
-              style="display: none;"
+              id="admin-dashboard-btn"
+              title="لوحة تحكم المشرف"
+              class="hidden items-center space-x-1.5 space-x-reverse bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 px-3.5 py-1.5 rounded-full text-xs font-bold transition shadow-sm"
             >
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+              <span>⚙️ لوحة التحكم</span>
             </a>
 
-            <!-- زر تسجيل الخروج -->
+            <!-- اسم المستخدم وتأكيد الدور -->
+            <div class="flex items-center space-x-2 space-x-reverse bg-gray-50 border border-gray-200 px-3 py-1.5 rounded-full">
+              <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              <span id="user-display-name" class="text-xs font-bold text-gray-700">مستخدم</span>
+            </div>
+
+            <!-- زر تسجيل الخروج السريع -->
             <button
               id="logout-btn"
               title="تسجيل الخروج"
-              class="text-gray-600 hover:text-red-600 p-2 rounded-xl hover:bg-red-50 transition"
+              class="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition"
             >
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
             </button>
           </div>
 
-          <!-- إذا لم يكن المستخدم مسجلاً -->
-          <div id="logged-out-icons" class="flex items-center">
+          <!-- حالة عدم تسجيل الدخول: يظهر زر الدخول -->
+          <div id="logged-out-widget" class="flex items-center">
             <a
               href="/login"
               data-link
-              class="bg-[#005DA5] hover:bg-[#098AC1] text-white px-5 py-2 rounded-xl font-bold transition shadow-sm text-sm"
+              class="bg-[#005DA5] hover:bg-[#098AC1] text-white px-5 py-2.5 rounded-xl font-bold transition duration-200 shadow-sm text-sm flex items-center space-x-2 space-x-reverse"
             >
-              تسجيل الدخول
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              <span>تسجيل الدخول</span>
             </a>
           </div>
         </div>
 
-        <!-- زر القائمة للشاشات الصغيرة -->
-        <button id="menu-btn" class="md:hidden block p-2 text-gray-700 hover:bg-gray-100 rounded-xl focus:outline-none">
+        <!-- زر القائمة للجوال -->
+        <button id="menu-btn" class="md:hidden p-2 text-gray-700 hover:bg-gray-100 rounded-xl focus:outline-none">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
           </svg>
         </button>
       </div>
 
-      <!-- قائمة الجوال -->
-      <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 py-4 px-6 space-y-3">
-        <a href="/" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-semibold">الرئيسية</a>
-        <a href="/menu" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-semibold">المنيو</a>
-        <a href="/about" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-semibold">عن المتجر</a>
-        <a href="/contact" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-semibold">تواصل معنا</a>
+      <!-- قائمة الجوال المنسدلة -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 py-4 px-6 space-y-3 shadow-xl">
+        <a href="/" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-bold">الرئيسية</a>
+        <a href="/menu" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-bold">قائمة الحلويات</a>
+        <a href="/about" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-bold">عن B-Labn</a>
+        <a href="/contact" data-link class="block py-2 text-gray-700 hover:text-[#005DA5] font-bold">تواصل معنا</a>
 
-        <div id="mobile-logged-in-icons" class="hidden pt-3 border-t border-gray-100 space-y-2">
-          <a href="/cart" data-link class="flex items-center py-2 text-gray-700 hover:text-[#005DA5] font-semibold">
-            🛒 سلة المشتريات
+        <div class="border-t border-gray-100 pt-3 flex items-center justify-around">
+          <a href="/cart" data-link class="relative flex flex-col items-center text-gray-700 hover:text-[#005DA5] text-xs font-bold p-2">
+            🛒 السلة
+            <span id="mobile-cart-badge" class="hidden absolute top-0 right-1 bg-[#005DA5] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
           </a>
-          <a href="/favorites" data-link class="flex items-center py-2 text-gray-700 hover:text-red-500 font-semibold">
+          <a href="/favorites" data-link class="relative flex flex-col items-center text-gray-700 hover:text-red-500 text-xs font-bold p-2">
             ❤️ المفضلة
+            <span id="mobile-favorites-badge" class="hidden absolute top-0 right-1 bg-red-500 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
           </a>
-          <a href="/dashboard" data-link id="mobile-admin-dashboard-icon" class="flex items-center py-2 text-purple-600 font-semibold" style="display: none;">
+          <a href="/dashboard" data-link id="mobile-admin-dashboard-btn" class="hidden text-purple-600 text-xs font-bold p-2">
             ⚙️ لوحة التحكم
           </a>
-          <button id="mobile-logout-btn" class="w-full text-right py-2 text-red-600 font-semibold">
+        </div>
+
+        <div id="mobile-logged-in-box" class="hidden pt-3 border-t border-gray-100">
+          <button id="mobile-logout-btn" class="w-full text-center py-2.5 text-red-600 font-bold bg-red-50 rounded-xl">
             🚪 تسجيل الخروج
           </button>
         </div>
 
-        <div id="mobile-logged-out-icons" class="pt-3 border-t border-gray-100">
+        <div id="mobile-logged-out-box" class="pt-3 border-t border-gray-100">
           <a href="/login" data-link class="block w-full text-center bg-[#005DA5] text-white py-2.5 rounded-xl font-bold">
             تسجيل الدخول
           </a>
         </div>
       </div>
-    </nav>
+    </header>
 
     <!-- الحاوية الرئيسية للتطبيق المتغير عبر SPA -->
     <main id="app" class="flex-grow"></main>
 
-    <!-- الفوتر العام -->
-    <footer class="bg-gray-900 text-white py-12 mt-auto">
+    <!-- الفوتر العام المحسن -->
+    <footer class="bg-gray-900 text-white pt-14 pb-8 mt-auto border-t-4 border-[#005DA5]">
       <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+          <!-- العمود الأول: عن المتجر -->
+          <div class="md:col-span-2">
             <div class="flex items-center space-x-3 space-x-reverse mb-4">
-              <span class="text-2xl font-black text-white">B-Labn</span>
+              <span class="text-3xl font-black text-white tracking-wide">B-Labn</span>
+              <span class="text-xs font-bold bg-[#005DA5] text-white px-2 py-0.5 rounded">بلبن الأصلي</span>
             </div>
-            <p class="text-gray-400 text-sm leading-relaxed mb-4">
-              أفضل وأشهى الحلويات الشرقية المبتكرة والمصنوعة يدويًا بأجود المكونات الطازجة.
+            <p class="text-gray-400 text-sm leading-relaxed mb-4 max-w-md">
+              الوجهة الأولى لأشهى وأحدث الحلويات المبتكرة المصنوعة يدوياً بالحليب الطبيعي والقشطة الفلاحي الطازجة. الجودة والمذاق الذي لا يُنسى في كل لقمة.
             </p>
-            <p class="text-gray-400 text-sm">📍 القاهرة، جمهورية مصر العربية</p>
-            <p class="text-gray-400 text-sm mt-1">📞 الخط الساخن: 19XXX</p>
+            <div class="space-y-1.5 text-xs text-gray-400">
+              <p>📍 المقر الرئيسي: القاهرة، جمهورية مصر العربية</p>
+              <p>📞 الخط الساخن لخدمة العملاء: 15761</p>
+              <p>🕒 مواعيد العمل: يومياً من 11:00 صباحاً حتى 2:00 صباحاً</p>
+            </div>
           </div>
 
+          <!-- العمود الثاني: روابط سريعة -->
           <div>
-            <h3 class="text-lg font-bold mb-4 text-[#098AC1]">روابط سريعة</h3>
-            <ul class="space-y-2 text-sm text-gray-400">
+            <h3 class="text-base font-bold mb-4 text-[#098AC1]">روابط سريعة</h3>
+            <ul class="space-y-2 text-sm text-gray-400 font-medium">
               <li><a href="/" data-link class="hover:text-white transition">الرئيسية</a></li>
               <li><a href="/menu" data-link class="hover:text-white transition">قائمة الحلويات</a></li>
+              <li><a href="/cart" data-link class="hover:text-white transition">سلة المشتريات</a></li>
               <li><a href="/about" data-link class="hover:text-white transition">عن B-Labn</a></li>
               <li><a href="/contact" data-link class="hover:text-white transition">تواصل معنا</a></li>
             </ul>
           </div>
 
+          <!-- العمود الثالث: التواصل الاجتماعي -->
           <div>
-            <h3 class="text-lg font-bold mb-4 text-[#098AC1]">تابعنا على وسائل التواصل</h3>
-            <div class="flex space-x-4 space-x-reverse text-xl text-gray-400">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hover:text-blue-500 transition"><i class="fab fa-facebook-f"></i></a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-pink-500 transition"><i class="fab fa-instagram"></i></a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <h3 class="text-base font-bold mb-4 text-[#098AC1]">تابع عائلة بلبن</h3>
+            <p class="text-xs text-gray-400 mb-4">تابعنا لتكون أول من يعرف بأحدث الاختراعات والعروض الحصرية.</p>
+            <div class="flex space-x-4 space-x-reverse text-xl text-gray-300">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-sky-500 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 hover:text-white transition"><i class="fab fa-youtube"></i></a>
             </div>
           </div>
         </div>
 
-        <div class="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
+        <div class="pt-6 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500">
           <p>&copy; 2026 B-Labn. جميع الحقوق محفوظة.</p>
+          <p class="mt-2 md:mt-0 font-medium">صُنع بحب لأجل عشاق الحلويات 🍨</p>
         </div>
       </div>
     </footer>

@@ -1,121 +1,181 @@
-import { navigateTo, updateNavAuthUI } from '../main.js';
+import { navigateTo, updateNavbarAuth } from '../main.js';
+import { showToast } from '../components/toast.js';
 
+// دالة القالب للوحة تحكم المشرف المطورة
 export default () => /*html*/ `
-  <div class="min-h-screen flex flex-col md:flex-row bg-gray-100">
-    <!-- الشريط الجانبي -->
-    <div class="w-full md:w-64 bg-white p-6 shadow-md flex flex-col justify-between space-y-6">
-      <div class="space-y-4">
-        <div class="text-center pb-4 border-b border-gray-100">
-          <h2 class="text-2xl font-extrabold text-[#005DA5]">لوحة التحكم</h2>
-          <p class="text-xs text-gray-400 mt-1">إدارة نظام B-Labn</p>
+  <div class="min-h-screen bg-[#F8FAFC]">
+    <!-- شريط علوي فرعي للوحة التحكم -->
+    <div class="bg-white border-b border-gray-200 px-6 py-4">
+      <div class="container mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-black text-[#005DA5] flex items-center space-x-2 space-x-reverse">
+            <span>⚙️ لوحة تحكم المشرف</span>
+            <span class="text-xs bg-purple-100 text-purple-700 font-bold px-2.5 py-0.5 rounded-full">إدارة النظام</span>
+          </h1>
+          <p class="text-xs text-gray-500 mt-0.5">تحكم كامل في منتجات B-Labn والمستخدمين والبيانات</p>
         </div>
-        <button
-          data-tab="products"
-          class="tab-btn w-full text-right px-4 py-3 rounded-xl font-bold bg-[#005DA5] text-white transition shadow-sm"
-        >
-          📦 عرض المنتجات
-        </button>
-        <button
-          data-tab="add-product"
-          class="tab-btn w-full text-right px-4 py-3 rounded-xl font-bold text-gray-700 hover:bg-gray-100 transition"
-        >
-          ➕ إضافة منتج جديد
-        </button>
-        <button
-          data-tab="users"
-          class="tab-btn w-full text-right px-4 py-3 rounded-xl font-bold text-gray-700 hover:bg-gray-100 transition"
-        >
-          👥 عرض المستخدمين
-        </button>
-      </div>
 
-      <div>
-        <button
-          id="dashboard-logout-btn"
-          class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-bold transition shadow-sm"
-        >
-          تسجيل الخروج
-        </button>
+        <!-- أزرار التبويبات العلوية -->
+        <div class="flex items-center space-x-2 space-x-reverse overflow-x-auto pb-1 sm:pb-0">
+          <button
+            id="tab-products"
+            data-tab="products"
+            class="dashboard-tab-btn px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-1.5 space-x-reverse bg-[#005DA5] text-white shadow-sm"
+          >
+            <span>📦 المنتجات الحالية</span>
+          </button>
+          <button
+            id="tab-add-product"
+            data-tab="add-product"
+            class="dashboard-tab-btn px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-1.5 space-x-reverse bg-gray-100 text-gray-600 hover:bg-gray-200"
+          >
+            <span>➕ إضافة منتج</span>
+          </button>
+          <button
+            id="tab-users"
+            data-tab="users"
+            class="dashboard-tab-btn px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-1.5 space-x-reverse bg-gray-100 text-gray-600 hover:bg-gray-200"
+          >
+            <span>👥 المستخدمين</span>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
-    <div class="flex-1 p-6 md:p-10">
-      <!-- قسم عرض المنتجات -->
-      <div id="products-section" class="tab-content">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">المنتجات الحالية</h2>
-          <span id="products-count" class="text-sm bg-blue-100 text-[#005DA5] px-3 py-1 rounded-full font-bold"></span>
+    <!-- محتوى لوحة التحكم -->
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+      <!-- كروت الإحصائيات السريعة -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#005DA5] flex items-center justify-center text-2xl font-black">
+            🍨
+          </div>
+          <div>
+            <span class="text-xs text-gray-400 font-bold block">إجمالي الأصناف</span>
+            <span id="stat-products-count" class="text-2xl font-black text-gray-800">0</span>
+          </div>
         </div>
-        <div id="products-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <p class="text-gray-500 col-span-full text-center py-10">جاري تحميل المنتجات...</p>
+
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse">
+          <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl font-black">
+            👥
+          </div>
+          <div>
+            <span class="text-xs text-gray-400 font-bold block">المستخدمين المسجلين</span>
+            <span id="stat-users-count" class="text-2xl font-black text-gray-800">0</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse">
+          <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center text-2xl font-black">
+            ⚡
+          </div>
+          <div>
+            <span class="text-xs text-gray-400 font-bold block">حالة قاعدة البيانات</span>
+            <span class="text-sm font-black text-green-600">متصل بـ Atlas بنجاح</span>
+          </div>
         </div>
       </div>
 
-      <!-- قسم إضافة منتج -->
-      <div id="add-product-section" class="tab-content hidden max-w-xl bg-white p-8 rounded-2xl shadow-sm">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">إضافة حلوى جديدة</h2>
-        <form id="add-product-form" class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">اسم المنتج</label>
-            <input
-              type="text"
-              id="product-name"
-              required
-              placeholder="مثال: قشطوطة بالمانجو"
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5]"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">السعر (ج.م)</label>
-            <input
-              type="number"
-              id="product-price"
-              required
-              min="0"
-              step="0.5"
-              placeholder="مثال: 55"
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5]"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">الوصف</label>
-            <textarea
-              id="product-description"
-              required
-              rows="3"
-              placeholder="وصف مكونات المنتج ومذاقه اللذيذ..."
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5]"
-            ></textarea>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">رابط الصورة</label>
-            <input
-              type="text"
-              id="product-image"
-              required
-              placeholder="/assets/images/img-10.jpg أو رابط خارجي"
-              class="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5]"
-            />
-          </div>
-          <button
-            type="submit"
-            id="add-product-submit"
-            class="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-bold transition shadow-md"
-          >
-            حفظ وإضافة المنتج
+      <!-- تبويب 1: استعراض المنتجات الحالية -->
+      <div id="section-products" class="dashboard-section">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-black text-gray-800">قائمة أصناف B-Labn</h2>
+          <button id="quick-add-btn" class="bg-[#005DA5] hover:bg-[#098AC1] text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+            + إضافة صنف جديد
           </button>
-        </form>
+        </div>
+        <div id="dashboard-products-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
 
-      <!-- قسم عرض المستخدمين -->
-      <div id="users-section" class="tab-content hidden max-w-3xl">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-800">المستخدمون المسجلون</h2>
-          <span id="users-count" class="text-sm bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-bold"></span>
+      <!-- تبويب 2: إضافة أو تعديل منتج -->
+      <div id="section-add-product" class="dashboard-section hidden">
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+            <h2 id="form-heading" class="text-2xl font-black text-gray-800">إضافة صنف جديد</h2>
+            <button id="cancel-edit-btn" class="hidden text-xs text-gray-400 hover:text-gray-600 font-bold">
+              إلغاء التعديل ✕
+            </button>
+          </div>
+
+          <form id="product-form" class="space-y-5">
+            <input type="hidden" id="edit-product-id" value="" />
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1.5">اسم الصنف</label>
+              <input
+                type="text"
+                id="product-name"
+                required
+                placeholder="مثال: قشطوطة بالمانجو واللبن"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5] text-sm"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1.5">السعر بالجنيه (ج.م)</label>
+              <input
+                type="number"
+                id="product-price"
+                required
+                min="0"
+                step="0.5"
+                placeholder="45"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5] text-sm"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1.5">الوصف والمكونات</label>
+              <textarea
+                id="product-description"
+                required
+                rows="3"
+                placeholder="صف هذا المنتج اللذيذ ومكوناته الطبيعية..."
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5] text-sm"
+              ></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1.5">رابط الصورة (URL أو مسار محلي)</label>
+              <input
+                type="text"
+                id="product-image"
+                required
+                placeholder="/assets/images/img-14.jpg أو رابط ويب"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#005DA5] text-sm text-left"
+                dir="ltr"
+              />
+            </div>
+
+            <button
+              type="submit"
+              id="save-product-btn"
+              class="w-full bg-[#005DA5] hover:bg-[#098AC1] text-white py-3.5 rounded-2xl font-black text-sm transition shadow-sm mt-4"
+            >
+              حفظ ونشر الصنف
+            </button>
+          </form>
         </div>
-        <div id="users-list" class="space-y-4">
-          <p class="text-gray-500 text-center py-10">جاري تحميل المستخدمين...</p>
+      </div>
+
+      <!-- تبويب 3: استعراض وإدارة المستخدمين -->
+      <div id="section-users" class="dashboard-section hidden">
+        <h2 class="text-xl font-black text-gray-800 mb-6">قائمة المستخدمين المسجلين</h2>
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-right divide-y divide-gray-100">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-4 text-xs font-black text-gray-500">اسم المستخدم</th>
+                  <th class="px-6 py-4 text-xs font-black text-gray-500">البريد الإلكتروني</th>
+                  <th class="px-6 py-4 text-xs font-black text-gray-500">نوع الحساب</th>
+                  <th class="px-6 py-4 text-xs font-black text-gray-500 text-center">الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-users-table" class="divide-y divide-gray-100 text-sm"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -123,245 +183,233 @@ export default () => /*html*/ `
 `;
 
 const rawApi = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
-const api = rawApi.replace(/\/+$/, '');
+const apiBase = rawApi.replace(/\/+$/, '');
 
-function getToken() {
-  return localStorage.getItem('token');
-}
-
-async function verifyAdminAuth() {
-  const token = getToken();
-  if (!token) {
-    alert('يرجى تسجيل الدخول بحساب مشرف أولاً.');
-    navigateTo('/login');
-    return false;
-  }
-
-  try {
-    const res = await fetch(`${api}/api/admin/dashboard`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!res.ok) {
-      alert('تم رفض الوصول. هذه الصفحة متاحة فقط للمشرفين.');
-      navigateTo('/');
-      return false;
-    }
-
-    const data = await res.json();
-    displayProducts(data.products || []);
-    displayUsers(data.users || []);
-    return true;
-  } catch (error) {
-    console.error('Admin verification error:', error);
-    alert('حدث خطأ أثناء التحقق من الصلاحيات.');
-    navigateTo('/');
-    return false;
-  }
-}
-
-async function fetchProducts() {
-  try {
-    const res = await fetch(`${api}/api/product/all`);
-    if (res.ok) {
-      const data = await res.json();
-      displayProducts(data.products || []);
-    }
-  } catch (err) {
-    console.error('Error fetching products:', err);
-  }
-}
-
-async function fetchUsers() {
-  const token = getToken();
-  try {
-    const res = await fetch(`${api}/api/admin/users`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      displayUsers(data.users || []);
-    }
-  } catch (err) {
-    console.error('Error fetching users:', err);
-  }
-}
-
-function displayProducts(products) {
-  const list = document.getElementById('products-list');
-  const countEl = document.getElementById('products-count');
-  if (!list) return;
-
-  if (countEl) countEl.textContent = `${products.length} منتج`;
-
-  if (products.length === 0) {
-    list.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">لا توجد منتجات مسجلة حالياً.</p>';
-    return;
-  }
-
-  list.innerHTML = products
-    .map((product) => `
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
-        <div>
-          <img 
-            src="${product.image}" 
-            alt="${product.name}" 
-            class="w-full h-40 object-cover rounded-xl mb-3"
-            onerror="this.src='/assets/images/img-10.jpg'"
-          />
-          <h3 class="font-bold text-lg text-gray-800">${product.name}</h3>
-          <p class="text-[#005DA5] font-extrabold my-1">${product.price} ج.م</p>
-          <p class="text-xs text-gray-500 line-clamp-2">${product.description || ''}</p>
-        </div>
-        <div class="mt-4 pt-3 border-t border-gray-100 flex justify-end">
-          <button
-            data-action="delete-product"
-            data-id="${product._id}"
-            class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-1.5 rounded-lg text-sm font-semibold transition"
-          >
-            حذف المنتج
-          </button>
-        </div>
-      </div>
-    `)
-    .join('');
-}
-
-function displayUsers(users) {
-  const list = document.getElementById('users-list');
-  const countEl = document.getElementById('users-count');
-  if (!list) return;
-
-  if (countEl) countEl.textContent = `${users.length} مستخدم`;
-
-  if (users.length === 0) {
-    list.innerHTML = '<p class="text-gray-500 text-center py-10">لا يوجد مستخدمون مسجلون حالياً.</p>';
-    return;
-  }
-
-  list.innerHTML = users
-    .map((user) => `
-      <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
-        <div>
-          <div class="flex items-center gap-2">
-            <h4 class="font-bold text-gray-800">${user.username}</h4>
-            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold ${
-              user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'
-            }">
-              ${user.role === 'admin' ? 'مشرف' : 'مستخدم'}
-            </span>
-          </div>
-          <p class="text-sm text-gray-500 mt-0.5">${user.email}</p>
-        </div>
-        ${
-          user.role !== 'admin'
-            ? `<button
-                data-action="delete-user"
-                data-id="${user._id}"
-                class="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-sm font-semibold transition"
-              >
-                حذف الحساب
-              </button>`
-            : '<span class="text-xs text-gray-400">حساب محمي</span>'
-        }
-      </div>
-    `)
-    .join('');
-}
-
-async function handleDeleteProduct(id) {
-  if (!confirm('هل أنت متأكد من رغبتك في حذف هذا المنتج نهائياً؟')) return;
-
-  const token = getToken();
-  try {
-    const res = await fetch(`${api}/api/product/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (res.ok) {
-      alert('تم حذف المنتج بنجاح.');
-      fetchProducts();
-    } else {
-      const err = await res.json();
-      alert(`فشل الحذف: ${err.message}`);
-    }
-  } catch (error) {
-    console.error('Delete product error:', error);
-    alert('حدث خطأ أثناء حذف المنتج.');
-  }
-}
-
-async function handleDeleteUser(id) {
-  if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
-
-  const token = getToken();
-  try {
-    const res = await fetch(`${api}/api/admin/users/${id}`, {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (res.ok) {
-      alert('تم حذف المستخدم بنجاح.');
-      fetchUsers();
-    } else {
-      const err = await res.json();
-      alert(`فشل الحذف: ${err.message}`);
-    }
-  } catch (error) {
-    console.error('Delete user error:', error);
-    alert('حدث خطأ أثناء حذف المستخدم.');
-  }
-}
-
-function switchTab(tabName) {
-  document.querySelectorAll('.tab-content').forEach((el) => el.classList.add('hidden'));
-  document.querySelectorAll('.tab-btn').forEach((btn) => {
-    btn.classList.remove('bg-[#005DA5]', 'text-white');
-    btn.classList.add('text-gray-700', 'hover:bg-gray-100');
-  });
-
-  const targetSection = document.getElementById(`${tabName}-section`);
-  if (targetSection) targetSection.classList.remove('hidden');
-
-  const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
-  if (activeBtn) {
-    activeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100');
-    activeBtn.classList.add('bg-[#005DA5]', 'text-white');
-  }
-}
+let currentProductsList = [];
 
 export async function initDashboard() {
-  const isAuthorized = await verifyAdminAuth();
-  if (!isAuthorized) return;
+  const token = localStorage.getItem('token');
+  const role = JSON.parse(localStorage.getItem('role') || '""');
 
-  // إعداد التبويبات
-  document.querySelectorAll('.tab-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const tab = btn.getAttribute('data-tab');
-      switchTab(tab);
-    });
+  if (!token || role !== 'admin') {
+    showToast('هذه الصفحة مخصصة للمشرفين فقط. يرجى تسجيل الدخول بحساب Admin.', 'error');
+    navigateTo('/login');
+    return;
+  }
+
+  setupTabs();
+  setupProductForm();
+
+  await Promise.all([loadProducts(), loadUsers()]);
+}
+
+function setupTabs() {
+  const tabs = document.querySelectorAll('.dashboard-tab-btn');
+  const sections = document.querySelectorAll('.dashboard-section');
+  const quickAdd = document.getElementById('quick-add-btn');
+
+  tabs.forEach((tab) => {
+    tab.onclick = () => {
+      const target = tab.getAttribute('data-tab');
+
+      tabs.forEach((t) => {
+        t.className =
+          'dashboard-tab-btn px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-1.5 space-x-reverse bg-gray-100 text-gray-600 hover:bg-gray-200';
+      });
+      tab.className =
+        'dashboard-tab-btn px-4 py-2 rounded-xl text-xs font-black transition flex items-center space-x-1.5 space-x-reverse bg-[#005DA5] text-white shadow-sm';
+
+      sections.forEach((sec) => sec.classList.add('hidden'));
+      const active = document.getElementById(`section-${target}`);
+      if (active) active.classList.remove('hidden');
+    };
   });
 
-  // إضافة منتج جديد
-  const addForm = document.getElementById('add-product-form');
-  if (addForm) {
-    addForm.addEventListener('submit', async (e) => {
+  if (quickAdd) {
+    quickAdd.onclick = () => {
+      resetProductForm();
+      const addTab = document.getElementById('tab-add-product');
+      if (addTab) addTab.click();
+    };
+  }
+}
+
+async function loadProducts() {
+  const listEl = document.getElementById('dashboard-products-list');
+  const statCount = document.getElementById('stat-products-count');
+
+  if (!listEl) return;
+
+  try {
+    listEl.innerHTML = '<p class="col-span-full text-center py-12 text-gray-400">جاري تحميل الأصناف...</p>';
+
+    const res = await fetch(`${apiBase}/api/product/all`);
+    const data = await res.json();
+    currentProductsList = data.products || [];
+
+    if (statCount) statCount.textContent = currentProductsList.length;
+
+    if (currentProductsList.length === 0) {
+      listEl.innerHTML = '<p class="col-span-full text-center py-12 text-gray-400">لا توجد منتجات مسجلة حالياً.</p>';
+      return;
+    }
+
+    listEl.innerHTML = currentProductsList
+      .map(
+        (p) => `
+        <div class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100 flex flex-col justify-between transition hover:shadow-md">
+          <div>
+            <div class="relative overflow-hidden rounded-2xl mb-4 bg-gray-50 h-44">
+              <img 
+                src="${p.image || '/assets/images/logo.jpg'}" 
+                alt="${p.name}" 
+                class="w-full h-full object-cover"
+                onerror="this.src='/assets/images/logo.jpg'"
+              />
+              <span class="absolute bottom-2 right-2 bg-white/95 backdrop-blur px-2.5 py-1 rounded-lg text-xs font-black text-[#005DA5] shadow-sm">
+                ${p.price} ج.م
+              </span>
+            </div>
+
+            <h3 class="font-black text-gray-800 text-base mb-1">${p.name}</h3>
+            <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-4">${p.description || ''}</p>
+          </div>
+
+          <div class="pt-3 border-t border-gray-100 grid grid-cols-2 gap-2">
+            <button 
+              data-edit-product="${p._id}"
+              class="w-full bg-blue-50 text-[#005DA5] hover:bg-[#005DA5] hover:text-white py-2 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 space-x-reverse"
+            >
+              <span>✏️ تعديل</span>
+            </button>
+            <button 
+              data-delete-product="${p._id}"
+              class="w-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white py-2 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1 space-x-reverse"
+            >
+              <span>🗑️ حذف</span>
+            </button>
+          </div>
+        </div>
+      `
+      )
+      .join('');
+
+    // ربط أزرار التعديل والحذف
+    listEl.querySelectorAll('[data-edit-product]').forEach((btn) => {
+      btn.onclick = () => {
+        const id = btn.getAttribute('data-edit-product');
+        const product = currentProductsList.find((p) => String(p._id) === String(id));
+        if (product) {
+          startEditProduct(product);
+        }
+      };
+    });
+
+    listEl.querySelectorAll('[data-delete-product]').forEach((btn) => {
+      btn.onclick = async () => {
+        const id = btn.getAttribute('data-delete-product');
+        const token = localStorage.getItem('token');
+        if (!confirm('هل أنت متأكد من حذف هذا الصنف من القائمة نهائياً؟')) return;
+
+        try {
+          const res = await fetch(`${apiBase}/api/product/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (res.ok) {
+            showToast('تم حذف المنتج بنجاح 🗑️', 'info');
+            await loadProducts();
+          } else {
+            const err = await res.json();
+            showToast(err.message || 'فشل حذف المنتج.', 'error');
+          }
+        } catch (e) {
+          showToast('حدث خطأ أثناء الاتصال بالخادم.', 'error');
+        }
+      };
+    });
+  } catch (err) {
+    console.error('Error loading products in dashboard:', err);
+    listEl.innerHTML = '<p class="col-span-full text-center py-12 text-red-600 font-bold">تعذر تحميل الأصناف.</p>';
+  }
+}
+
+function startEditProduct(product) {
+  const formHeading = document.getElementById('form-heading');
+  const cancelBtn = document.getElementById('cancel-edit-btn');
+  const idInput = document.getElementById('edit-product-id');
+  const nameInput = document.getElementById('product-name');
+  const priceInput = document.getElementById('product-price');
+  const descInput = document.getElementById('product-description');
+  const imageInput = document.getElementById('product-image');
+  const saveBtn = document.getElementById('save-product-btn');
+
+  if (formHeading) formHeading.textContent = `تعديل: ${product.name}`;
+  if (cancelBtn) cancelBtn.classList.remove('hidden');
+  if (idInput) idInput.value = product._id;
+  if (nameInput) nameInput.value = product.name;
+  if (priceInput) priceInput.value = product.price;
+  if (descInput) descInput.value = product.description;
+  if (imageInput) imageInput.value = product.image;
+  if (saveBtn) saveBtn.textContent = 'تحديث بيانات الصنف ✓';
+
+  const addTab = document.getElementById('tab-add-product');
+  if (addTab) {
+    addTab.querySelector('span').textContent = '✏️ تعديل صنف';
+    addTab.click();
+  }
+}
+
+function resetProductForm() {
+  const form = document.getElementById('product-form');
+  const formHeading = document.getElementById('form-heading');
+  const cancelBtn = document.getElementById('cancel-edit-btn');
+  const idInput = document.getElementById('edit-product-id');
+  const saveBtn = document.getElementById('save-product-btn');
+  const addTab = document.getElementById('tab-add-product');
+
+  if (form) form.reset();
+  if (formHeading) formHeading.textContent = 'إضافة صنف جديد';
+  if (cancelBtn) cancelBtn.classList.add('hidden');
+  if (idInput) idInput.value = '';
+  if (saveBtn) saveBtn.textContent = 'حفظ ونشر الصنف';
+  if (addTab) addTab.querySelector('span').textContent = '➕ إضافة منتج';
+}
+
+function setupProductForm() {
+  const form = document.getElementById('product-form');
+  const cancelBtn = document.getElementById('cancel-edit-btn');
+
+  if (cancelBtn) {
+    cancelBtn.onclick = () => {
+      resetProductForm();
+      const productsTab = document.getElementById('tab-products');
+      if (productsTab) productsTab.click();
+    };
+  }
+
+  if (form) {
+    form.onsubmit = async (e) => {
       e.preventDefault();
+      const token = localStorage.getItem('token');
+      const editId = document.getElementById('edit-product-id').value;
       const name = document.getElementById('product-name').value.trim();
-      const price = document.getElementById('product-price').value.trim();
+      const price = Number(document.getElementById('product-price').value);
       const description = document.getElementById('product-description').value.trim();
       const image = document.getElementById('product-image').value.trim();
-      const submitBtn = document.getElementById('add-product-submit');
+      const saveBtn = document.getElementById('save-product-btn');
 
-      const token = getToken();
+      const isEdit = Boolean(editId);
+      const endpoint = isEdit ? `${apiBase}/api/product/${editId}` : `${apiBase}/api/product/add`;
+      const method = isEdit ? 'PUT' : 'POST';
+
       try {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'جاري الحفظ...';
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'جاري الحفظ...';
 
-        const res = await fetch(`${api}/api/product/add`, {
-          method: 'POST',
+        const res = await fetch(endpoint, {
+          method,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
@@ -369,56 +417,101 @@ export async function initDashboard() {
           body: JSON.stringify({ name, price, description, image }),
         });
 
+        const data = await res.json();
+
         if (res.ok) {
-          alert('تمت إضافة المنتج بنجاح!');
-          addForm.reset();
-          switchTab('products');
-          fetchProducts();
+          showToast(isEdit ? 'تم تحديث المنتج بنجاح! 🎉' : 'تمت إضافة المنتج الجديد بنجاح! 🍨', 'success');
+          resetProductForm();
+          await loadProducts();
+
+          const productsTab = document.getElementById('tab-products');
+          if (productsTab) productsTab.click();
         } else {
-          const err = await res.json();
-          alert(`خطأ: ${err.message}`);
+          showToast(data.message || 'حدث خطأ أثناء الحفظ.', 'error');
         }
       } catch (err) {
-        console.error('Add product error:', err);
-        alert('تعذر الاتصال بالخادم لإضافة المنتج.');
+        showToast('خطأ في الاتصال بالسيرفر.', 'error');
       } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'حفظ وإضافة المنتج';
+        saveBtn.disabled = false;
+        saveBtn.textContent = isEdit ? 'تحديث بيانات الصنف ✓' : 'حفظ ونشر الصنف';
       }
-    });
+    };
   }
+}
 
-  // أحداث الحذف
-  const productsList = document.getElementById('products-list');
-  if (productsList) {
-    productsList.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-action="delete-product"]');
-      if (btn) {
-        handleDeleteProduct(btn.getAttribute('data-id'));
-      }
-    });
-  }
+async function loadUsers() {
+  const token = localStorage.getItem('token');
+  const tableEl = document.getElementById('dashboard-users-table');
+  const statCount = document.getElementById('stat-users-count');
 
-  const usersList = document.getElementById('users-list');
-  if (usersList) {
-    usersList.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-action="delete-user"]');
-      if (btn) {
-        handleDeleteUser(btn.getAttribute('data-id'));
-      }
-    });
-  }
+  if (!tableEl) return;
 
-  // زر تسجيل الخروج
-  const logoutBtn = document.getElementById('dashboard-logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      localStorage.removeItem('role');
-      updateNavAuthUI();
-      alert('تم تسجيل الخروج بنجاح.');
-      navigateTo('/login');
+  try {
+    const res = await fetch(`${apiBase}/api/admin/users`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
+
+    if (!res.ok) throw new Error('فشل جلب المستخدمين');
+    const data = await res.json();
+    const users = data.users || [];
+
+    if (statCount) statCount.textContent = users.length;
+
+    if (users.length === 0) {
+      tableEl.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-400">لا يوجد مستخدمون مسجلون.</td></tr>';
+      return;
+    }
+
+    tableEl.innerHTML = users
+      .map(
+        (u) => `
+        <tr class="hover:bg-gray-50/50 transition">
+          <td class="px-6 py-4 font-bold text-gray-800">${u.username}</td>
+          <td class="px-6 py-4 text-gray-500 font-mono text-xs" dir="ltr">${u.email}</td>
+          <td class="px-6 py-4">
+            <span class="px-3 py-1 text-xs font-black rounded-full ${
+              u.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-50 text-blue-700'
+            }">
+              ${u.role === 'admin' ? 'مشرف (Admin)' : 'مستخدم'}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <button
+              data-delete-user="${u._id}"
+              class="text-red-500 hover:text-red-700 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-red-50 transition"
+            >
+              حذف الحساب
+            </button>
+          </td>
+        </tr>
+      `
+      )
+      .join('');
+
+    tableEl.querySelectorAll('[data-delete-user]').forEach((btn) => {
+      btn.onclick = async () => {
+        const id = btn.getAttribute('data-delete-user');
+        if (!confirm('هل أنت متأكد من حذف هذا المستخدم؟')) return;
+
+        try {
+          const delRes = await fetch(`${apiBase}/api/admin/users/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (delRes.ok) {
+            showToast('تم حذف المستخدم بنجاح.', 'info');
+            await loadUsers();
+          } else {
+            const err = await delRes.json();
+            showToast(err.message || 'فشل حذف المستخدم.', 'error');
+          }
+        } catch (e) {
+          showToast('خطأ أثناء حذف المستخدم.', 'error');
+        }
+      };
+    });
+  } catch (err) {
+    tableEl.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-red-500">فشل في جلب المستخدمين.</td></tr>';
   }
 }

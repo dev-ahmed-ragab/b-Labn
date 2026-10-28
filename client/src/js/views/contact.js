@@ -1,9 +1,10 @@
 import contact from '../contact/contact.js';
 import map from '../contact/map.js';
+import { showToast } from '../components/toast.js';
 
 export default () => /*html*/ `
-  <!-- صفحة الاتصال -->
-  <section id="contact-page" class="section bg-pink-50 py-12">
+  <!-- صفحة الاتصال المحسنة -->
+  <section id="contact-page" class="section bg-[#F8FAFC] py-12">
     ${contact()}
     ${map()}
   </section>
@@ -14,7 +15,7 @@ export function initContact() {
   if (form) {
     form.onsubmit = (e) => {
       e.preventDefault();
-      alert('شكرًا لتواصلك مع B-Labn! تم استلام رسالتك وسنقوم بالرد عليك في أقرب وقت.');
+      showToast('شكرًا لتواصلك مع B-Labn! تم استلام رسالتك وسنقوم بالرد عليك في أقرب وقت 💬', 'success', 4500);
       form.reset();
     };
   }

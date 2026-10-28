@@ -7,6 +7,7 @@ import cartView, { initCart } from './views/cart.js';
 import favoritesView, { initFavorites } from './views/favorites.js';
 import loginView, { initLogin } from './views/login.js';
 import dashboardView, { initDashboard } from './views/dashboard.js';
+import { showToast } from './components/toast.js';
 
 // خريطة مسارات التطبيق
 const routes = {
@@ -20,46 +21,118 @@ const routes = {
   '/dashboard': { title: 'B-Labn - بلبن | لوحة التحكم', render: dashboardView, init: initDashboard },
 };
 
-// دالة تحديث حالة الأيقونات وعناصر التنقل بناءً على المصادقة
+// دالة تحديث عدادات السلة والمفضلة (Badges)
+export function updateBadges() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+  const cartCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  const favCount = favorites.length;
+
+  const cartBadge = document.getElementById('cart-badge');
+  const favBadge = document.getElementById('favorites-badge');
+  const mobileCartBadge = document.getElementById('mobile-cart-badge');
+  const mobileFavBadge = document.getElementById('mobile-favorites-badge');
+
+  if (cartBadge) {
+    if (cartCount > 0) {
+      cartBadge.textContent = cartCount > 99 ? '99+' : cartCount;
+      cartBadge.classList.remove('hidden');
+    } else {
+      cartBadge.classList.add('hidden');
+    }
+  }
+
+  if (mobileCartBadge) {
+    if (cartCount > 0) {
+      mobileCartBadge.textContent = cartCount > 99 ? '99+' : cartCount;
+      mobileCartBadge.classList.remove('hidden');
+    } else {
+      mobileCartBadge.classList.add('hidden');
+    }
+  }
+
+  if (favBadge) {
+    if (favCount > 0) {
+      favBadge.textContent = favCount > 99 ? '99+' : favCount;
+      favBadge.classList.remove('hidden');
+    } else {
+      favBadge.classList.add('hidden');
+    }
+  }
+
+  if (mobileFavBadge) {
+    if (favCount > 0) {
+      mobileFavBadge.textContent = favCount > 99 ? '99+' : favCount;
+      mobileFavBadge.classList.remove('hidden');
+    } else {
+      mobileFavBadge.classList.add('hidden');
+    }
+  }
+}
+
+// دالة تحديث حالة عناصر النافبار بناءً على المصادقة
 export function updateNavbarAuth() {
   const token = localStorage.getItem('token');
   let role = '';
+  let user = null;
+
   try {
     role = JSON.parse(localStorage.getItem('role')) || '';
+    user = JSON.parse(localStorage.getItem('user')) || null;
   } catch {
     role = localStorage.getItem('role') || '';
   }
 
-  const loggedInIcons = document.getElementById('logged-in-icons');
-  const loggedOutIcons = document.getElementById('logged-out-icons');
-  const mobileLoggedInIcons = document.getElementById('mobile-logged-in-icons');
-  const mobileLoggedOutIcons = document.getElementById('mobile-logged-out-icons');
-
-  const adminDashboardIcon = document.getElementById('admin-dashboard-icon');
-  const mobileAdminDashboardIcon = document.getElementById('mobile-admin-dashboard-icon');
+  const loggedInWidget = document.getElementById('logged-in-widget');
+  const loggedOutWidget = document.getElementById('logged-out-widget');
+  const userDisplayName = document.getElementById('user-display-name');
+  const adminBtn = document.getElementById('admin-dashboard-btn');
+  const mobileAdminBtn = document.getElementById('mobile-admin-dashboard-btn');
+  const mobileLoggedInBox = document.getElementById('mobile-logged-in-box');
+  const mobileLoggedOutBox = document.getElementById('mobile-logged-out-box');
 
   if (token) {
-    if (loggedInIcons) loggedInIcons.classList.remove('hidden');
-    if (loggedOutIcons) loggedOutIcons.classList.add('hidden');
-    if (mobileLoggedInIcons) mobileLoggedInIcons.classList.remove('hidden');
-    if (mobileLoggedOutIcons) mobileLoggedOutIcons.classList.add('hidden');
+    if (loggedInWidget) loggedInWidget.classList.remove('hidden');
+    if (loggedOutWidget) loggedOutWidget.classList.add('hidden');
+    if (mobileLoggedInBox) mobileLoggedInBox.classList.remove('hidden');
+    if (mobileLoggedOutBox) mobileLoggedOutBox.classList.add('hidden');
 
+    const name = (user && (user.username || user.email)) || 'حسابي';
     const isAdmin = role === 'admin';
-    if (adminDashboardIcon) adminDashboardIcon.style.display = isAdmin ? 'inline-flex' : 'none';
-    if (mobileAdminDashboardIcon) mobileAdminDashboardIcon.style.display = isAdmin ? 'block' : 'none';
+
+    if (userDisplayName) {
+      userDisplayName.textContent = isAdmin ? `${name} (مشرف)` : name;
+    }
+
+    if (adminBtn) {
+      if (isAdmin) {
+        adminBtn.classList.remove('hidden');
+        adminBtn.classList.add('inline-flex');
+      } else {
+        adminBtn.classList.add('hidden');
+        adminBtn.classList.remove('inline-flex');
+      }
+    }
+
+    if (mobileAdminBtn) {
+      if (isAdmin) {
+        mobileAdminBtn.classList.remove('hidden');
+      } else {
+        mobileAdminBtn.classList.add('hidden');
+      }
+    }
   } else {
-    if (loggedInIcons) loggedInIcons.classList.add('hidden');
-    if (loggedOutIcons) loggedOutIcons.classList.remove('hidden');
-    if (mobileLoggedInIcons) mobileLoggedInIcons.classList.add('hidden');
-    if (mobileLoggedOutIcons) mobileLoggedOutIcons.classList.remove('hidden');
-
-    if (adminDashboardIcon) adminDashboardIcon.style.display = 'none';
-    if (mobileAdminDashboardIcon) mobileAdminDashboardIcon.style.display = 'none';
+    if (loggedInWidget) loggedInWidget.classList.add('hidden');
+    if (loggedOutWidget) loggedOutWidget.classList.remove('hidden');
+    if (mobileLoggedInBox) mobileLoggedInBox.classList.add('hidden');
+    if (mobileLoggedOutBox) mobileLoggedOutBox.classList.remove('hidden');
+    if (adminBtn) adminBtn.classList.add('hidden');
+    if (mobileAdminBtn) mobileAdminBtn.classList.add('hidden');
   }
-}
 
-// اسم بديل للتوافق
-export const updateNavAuthUI = updateNavbarAuth;
+  updateBadges();
+}
 
 // دالة التنقل البرمجي السلس
 export function navigateTo(url) {
@@ -93,7 +166,7 @@ export async function router() {
     mobileMenu.classList.add('hidden');
   }
 
-  // تحديث حالة النافبار
+  // تحديث حالة النافبار والعدادات
   updateNavbarAuth();
 
   // تشغيل دالة تهيئة الصفحة الحالية
@@ -109,13 +182,11 @@ export async function router() {
 // معالجة تسجيل الخروج العام
 function handleGlobalLogout(e) {
   if (e) e.preventDefault();
-  if (!confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟')) return;
-
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   localStorage.removeItem('role');
   updateNavbarAuth();
-  alert('تم تسجيل الخروج بنجاح.');
+  showToast('تم تسجيل الخروج بنجاح 👋', 'info');
   navigateTo('/login');
 }
 
