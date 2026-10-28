@@ -1,3 +1,6 @@
-dev.env
 node_modules
 .env
+.env.*
+dev.env
+.DS_Store
+npm-debug.log*

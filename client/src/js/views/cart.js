@@ -1,222 +1,188 @@
 export default () => /*html*/ `
-  <section class="p-8 bg-gray-50 min-h-screen">
-    <div class="container mx-auto">
+  <section class="p-8 bg-gray-50 min-h-[70vh]">
+    <div class="container mx-auto max-w-4xl">
       <!-- عنوان الصفحة -->
-      <h2 class="text-3xl font-bold text-center mb-6">عرض السلة</h2>
+      <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-8">سلة المشتريات</h2>
 
       <!-- رسالة عدم وجود منتجات -->
-      <div id="no-products-message" class="hidden text-center text-gray-700 font-bold text-lg">
-        لا توجد منتجات في السلة.
+      <div id="no-products-message" class="hidden text-center py-16 bg-white rounded-2xl shadow-sm">
+        <div class="text-5xl mb-4">🛒</div>
+        <h3 class="text-2xl font-bold text-gray-700 mb-2">سلتك فارغة حالياً</h3>
+        <p class="text-gray-500 mb-6">استكشف أشهى حلويات B-Labn وأضفها إلى سلتك!</p>
+        <a href="/menu" data-link class="inline-block bg-[#005DA5] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#098AC1] transition shadow">
+          اكتشف المنيو الآن
+        </a>
       </div>
 
       <!-- عرض المنتجات -->
-      <div id="productGallery" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+      <div id="productGallery" class="space-y-4"></div>
 
       <!-- إجمالي السعر وزر إنهاء الشراء -->
-      <div id="checkout-section" class="mt-8 hidden">
-        <div class="flex justify-between items-center mb-4">
-          <span class="text-xl font-bold">إجمالي السعر:</span>
-          <span id="total-price" class="text-xl font-bold text-green-600">0 ريال</span>
+      <div id="checkout-section" class="mt-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hidden">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
+          <span class="text-xl font-bold text-gray-700">إجمالي الحساب:</span>
+          <span id="total-price" class="text-2xl font-extrabold text-green-600">0 ج.م</span>
         </div>
-        <button onclick="checkout()" 
-                class="w-full bg-[#005DA5] text-white px-6 py-3 rounded-lg hover:bg-[#098AC1]">
-          إنهاء عملية الشراء
+        <button id="checkout-btn" class="w-full bg-[#005DA5] hover:bg-[#098AC1] text-white text-lg py-4 rounded-xl font-bold transition shadow-md">
+          تأكيد وإنهاء الطلب
         </button>
       </div>
     </div>
   </section>
 `;
 
-// دالة للحصول على بيانات المنتجات من localStorage
-function getProductsFromLocalStorage() {
-  const products = JSON.parse(localStorage.getItem('cart')) || [];
-  return products;
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart')) || [];
 }
 
-// دالة لتحديث بيانات المنتجات في localStorage
-function updateProductsInLocalStorage(products) {
-  localStorage.setItem('cart', JSON.stringify(products));
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-// دالة للحصول على قائمة المفضلة من localStorage
-function getFavoritesFromLocalStorage() {
-  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-  return favorites;
-}
-
-// دالة لتحديث قائمة المفضلة في localStorage
-function updateFavoritesInLocalStorage(favorites) {
-  localStorage.setItem('favorites', JSON.stringify(favorites));
-}
-
-// دالة لعرض المنتجات
 function renderProductGallery() {
-  const products = getProductsFromLocalStorage();
-  const favorites = getFavoritesFromLocalStorage();
-
-  // التحقق من وجود العناصر في DOM
+  const products = getCart();
   const productGallery = document.getElementById('productGallery');
   const noProductsMessage = document.getElementById('no-products-message');
   const checkoutSection = document.getElementById('checkout-section');
   const totalPriceElement = document.getElementById('total-price');
 
-  if (
-    !productGallery ||
-    !noProductsMessage ||
-    !checkoutSection ||
-    !totalPriceElement
-  ) {
-    console.error('One or more elements are missing in the DOM.');
+  if (!productGallery || !noProductsMessage || !checkoutSection || !totalPriceElement) {
     return;
   }
 
   if (products.length === 0) {
-    // إذا لم تكن هناك منتجات، نعرض رسالة ونخفي الزر
     productGallery.innerHTML = '';
     noProductsMessage.classList.remove('hidden');
     checkoutSection.classList.add('hidden');
     return;
   }
 
-  // إذا كانت هناك منتجات، نخفي الرسالة ونعرض الزر
   noProductsMessage.classList.add('hidden');
   checkoutSection.classList.remove('hidden');
 
-  // حساب الإجمالي
   let total = 0;
-  products.forEach((product) => {
-    total += product.price * product.quantity;
-  });
-  totalPriceElement.textContent = `${total} ريال`;
-
-  // عرض المنتجات
   productGallery.innerHTML = products
-    .map(
-      (product) => `
-      <div class="product-item bg-white p-4 rounded-lg shadow-md relative">
-        <img src="${product.image}" alt="${
-        product.name
-      }" class="w-full h-48 object-cover rounded-md mb-4">
-        <h3 class="text-xl font-bold mb-2">${product.name}</h3>
-        <p class="text-gray-700 mb-2">السعر: ${product.price} ريال</p>
-        <div class="flex items-center justify-between mb-4">
-          <button onclick="decreaseQuantity(${product.id})" 
-                  class="bg-gray-300 text-gray-700 px-3 py-1 rounded-lg hover:bg-gray-400">
-            -
-          </button>
-          <span id="quantity-${product.id}" class="text-lg font-bold">${
-        product.quantity
-      }</span>
-          <button onclick="increaseQuantity(${product.id})" 
-                  class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600">
-            +
-          </button>
+    .map((product) => {
+      const id = product._id || product.id;
+      const qty = product.quantity || 1;
+      const price = Number(product.price) || 0;
+      const subtotal = price * qty;
+      total += subtotal;
+
+      return `
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4 w-full sm:w-auto">
+            <img 
+              src="${product.image}" 
+              alt="${product.name}" 
+              class="w-20 h-20 object-cover rounded-xl"
+              onerror="this.src='/assets/images/img-10.jpg'"
+            />
+            <div>
+              <h3 class="text-lg font-bold text-gray-800">${product.name}</h3>
+              <p class="text-sm text-gray-500">${price} ج.م للقطعة</p>
+              <p class="text-sm font-semibold text-[#005DA5]">المجموع: ${subtotal} ج.م</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
+            <div class="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+              <button 
+                data-action="decrease" 
+                data-id="${id}"
+                class="px-3 py-1.5 bg-gray-50 hover:bg-gray-200 text-gray-700 font-bold transition"
+              >
+                -
+              </button>
+              <span class="px-4 py-1.5 font-bold text-gray-800">${qty}</span>
+              <button 
+                data-action="increase" 
+                data-id="${id}"
+                class="px-3 py-1.5 bg-gray-50 hover:bg-gray-200 text-gray-700 font-bold transition"
+              >
+                +
+              </button>
+            </div>
+
+            <button 
+              data-action="delete" 
+              data-id="${id}"
+              class="text-red-500 hover:text-red-700 p-2 font-medium text-sm transition"
+              title="حذف من السلة"
+            >
+              حذف
+            </button>
+          </div>
         </div>
-        <button onclick="deleteProduct(${product.id})" 
-                class="w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
-          حذف
-        </button>
-        <!-- زر المفضلة -->
-        <button onclick="toggleFavorite(${product.id})"
-                class="absolute top-2 right-2 p-2 rounded-full ${
-                  favorites.some((fav) => fav.id === product.id)
-                    ? 'bg-red-500'
-                    : 'bg-gray-300'
-                }">
-          ❤️
-        </button>
-      </div>
-    `
-    )
+      `;
+    })
     .join('');
+
+  totalPriceElement.textContent = `${total} ج.م`;
 }
 
-// دالة لزيادة الكمية
 function increaseQuantity(productId) {
-  const products = getProductsFromLocalStorage();
-  const product = products.find((p) => p.id === productId);
-  if (product) {
-    product.quantity += 1;
-    updateProductsInLocalStorage(products);
+  const cart = getCart();
+  const item = cart.find((p) => (p._id || p.id) === productId);
+  if (item) {
+    item.quantity = (item.quantity || 1) + 1;
+    saveCart(cart);
     renderProductGallery();
   }
 }
 
-// دالة لتقليل الكمية
 function decreaseQuantity(productId) {
-  const products = getProductsFromLocalStorage();
-  const product = products.find((p) => p.id === productId);
-  if (product && product.quantity > 1) {
-    product.quantity -= 1;
-    updateProductsInLocalStorage(products);
+  const cart = getCart();
+  const item = cart.find((p) => (p._id || p.id) === productId);
+  if (item) {
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      const idx = cart.indexOf(item);
+      cart.splice(idx, 1);
+    }
+    saveCart(cart);
     renderProductGallery();
   }
 }
 
-// دالة لحذف المنتج
 function deleteProduct(productId) {
-  let products = getProductsFromLocalStorage();
-  products = products.filter((product) => product.id !== productId);
-  updateProductsInLocalStorage(products);
+  let cart = getCart();
+  cart = cart.filter((p) => (p._id || p.id) !== productId);
+  saveCart(cart);
   renderProductGallery();
-  console.log(`تم حذف المنتج ذو ID: ${productId}`);
 }
 
-// دالة لإنهاء عملية الشراء
 function checkout() {
-  const products = getProductsFromLocalStorage();
-  let total = 0;
+  const cart = getCart();
+  if (cart.length === 0) return;
 
-  products.forEach((product) => {
-    total += product.price * product.quantity;
-  });
-
-  console.log('إجمالي السعر:', total, 'ريال');
-  alert(`شكرًا لشرائك! إجمالي الطلب هو ${total} ريال.`);
-  localStorage.removeItem('cart'); // مسح السلة بعد الشراء
-  renderProductGallery(); // تحديث العرض
+  const total = cart.reduce((sum, p) => sum + (Number(p.price) || 0) * (p.quantity || 1), 0);
+  alert(`شكرًا لطلبك من B-Labn! إجمالي الطلب هو ${total} ج.م. سيتم التجهيز والتوصيل قريباً.`);
+  localStorage.removeItem('cart');
+  renderProductGallery();
 }
 
-// دالة لإضافة أو حذف المنتج من المفضلة
-function toggleFavorite(productId) {
-  const products = getProductsFromLocalStorage();
-  const favorites = getFavoritesFromLocalStorage();
+export function initCart() {
+  const productGallery = document.getElementById('productGallery');
+  if (productGallery) {
+    productGallery.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-action]');
+      if (!btn) return;
 
-  const product = products.find((p) => p.id === productId);
+      const action = btn.getAttribute('data-action');
+      const id = btn.getAttribute('data-id');
 
-  if (!product) {
-    console.error('Product not found.');
-    return;
+      if (action === 'increase') increaseQuantity(id);
+      else if (action === 'decrease') decreaseQuantity(id);
+      else if (action === 'delete') deleteProduct(id);
+    });
   }
 
-  const isFavorite = favorites.some((fav) => fav.id === productId);
-
-  if (isFavorite) {
-    // إذا كان المنتج موجودًا في المفضلة، نحذفه
-    const updatedFavorites = favorites.filter((fav) => fav.id !== productId);
-    updateFavoritesInLocalStorage(updatedFavorites);
-    console.log(`تم حذف المنتج من المفضلة: ${product.name}`);
-  } else {
-    // إذا لم يكن موجودًا، نضيفه
-    favorites.push(product);
-    updateFavoritesInLocalStorage(favorites);
-    console.log(`تمت إضافة المنتج إلى المفضلة: ${product.name}`);
+  const checkoutBtn = document.getElementById('checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', checkout);
   }
 
-  renderProductGallery(); // تحديث العرض
+  renderProductGallery();
 }
-
-// تحميل الدوال عند بدء الصفحة
-document.addEventListener('DOMContentLoaded', () => {
-  // إضافة الدوال إلى النطاق العام
-  window.increaseQuantity = increaseQuantity;
-  window.decreaseQuantity = decreaseQuantity;
-  window.deleteProduct = deleteProduct;
-  window.checkout = checkout;
-  window.toggleFavorite = toggleFavorite;
-
-  // التأكد من أن جميع العناصر جاهزة في DOM
-  setTimeout(() => {
-    renderProductGallery();
-  }, 0); // ضمان تحميل الـ DOM بالكامل
-});

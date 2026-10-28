@@ -1,8 +1,8 @@
-# B-Labn Project
+# B-Labn Project (بلبن)
 
 ## Overview
 
-B-Labn is a web application designed to provide a seamless experience for users to explore and purchase a variety of products. The project is built using a client-server architecture, with the client side developed in Vanilla JavaScript and the server side using Node.js and Express.
+B-Labn is a full-stack e-commerce web application inspired by the famous dessert brand. It delivers a seamless, responsive Single-Page Application (SPA) experience built with modern Vanilla JavaScript on the frontend and Node.js/Express with MongoDB on the backend.
 
 ## Project Structure
 
@@ -27,32 +27,40 @@ b-Labn/
 │   │       ├── home/
 │   │       ├── layer/
 │   │       └── views/
-│   └── .vscode/
-│       └── settings.json
+│   │           ├── about.js
+│   │           ├── cart.js
+│   │           ├── contact.js
+│   │           ├── dashboard.js
+│   │           ├── favorites.js
+│   │           ├── home.js
+│   │           ├── login.js
+│   │           └── menu.js
+│   └── vercel.json
 ├── server/
-│   ├── .env
+│   ├── .env.example
 │   ├── .gitignore
 │   ├── app.js
+│   ├── index.js
 │   ├── package.json
-│   ├── server.js
 │   ├── middleware/
 │   │   └── authMiddleware.js
 │   ├── models/
-│   │   ├── Admins.js
 │   │   ├── Product.js
 │   │   └── User.js
-│   └── routes/
-│       ├── admin.js
-│       ├── auth.js
-│       ├── product.js
-│       └── user.js
+│   ├── routes/
+│   │   ├── admin.js
+│   │   ├── auth.js
+│   │   ├── product.js
+│   │   └── user.js
+│   └── vercel.json
+└── README
 ```
 
 ## Prerequisites
 
-- Node.js (v14 or higher)
-- npm (v6 or higher)
-- MongoDB
+- Node.js (v18 or higher)
+- npm (v8 or higher)
+- MongoDB Database (Local or MongoDB Atlas)
 
 ## Installation
 
@@ -77,31 +85,46 @@ npm install
 
 ## Configuration
 
-1. Create a `.env` file in the `server` directory and add the following environment variables:
+1. Copy `.env.example` in `server/` to `.env`:
 
+```sh
+cd server
+cp .env.example .env
 ```
-JWT_SECRET=your_jwt_secret
+
+2. Configure environment variables in `server/.env`:
+
+```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+3. Configure client environment variable in `client/.env`:
+
+```env
+VITE_BASE_URL=http://localhost:5000
 ```
 
 ## Running the Application
 
-1. Start the server:
+1. Start the backend server:
 
 ```sh
 cd server
-npm start
+npm run dev   # for development with auto-reload
+# or
+npm start     # for production
 ```
 
-2. Start the client:
+2. Start the client application:
 
 ```sh
 cd ../client
 npm run dev
 ```
 
-3. Open your browser and navigate to `http://localhost:5501` to view the application.
+3. Open your browser and navigate to the local Vite URL (e.g. `http://localhost:3000`).
 
 ## Scripts
 
@@ -109,28 +132,27 @@ npm run dev
 
 - `npm run dev`: Start the development server using Vite.
 - `npm run build`: Build the project for production.
-- `npm run serve`: Preview the production build.
+- `npm run serve`: Preview the production build locally.
 
 ### Server
 
-- `npm start`: Start the server using `nodemon` and `env-cmd`.
+- `npm run dev`: Start the development server using `nodemon`.
+- `npm start`: Start the production server using `node index.js`.
 
 ## Features
 
-- User authentication (login and registration)
-- Product listing and details
-- Shopping cart functionality
-- Favorites management
-- Admin dashboard for managing products and users
+- **SPA Routing**: Fast client-side routing without full page reloads.
+- **Authentication**: JWT-based login and registration with hashed passwords (`bcryptjs`).
+- **Role-based Access Control**: Protected admin middleware restricting dashboard access, user management, and product management.
+- **Menu & Search**: Interactive dessert catalog with real-time text search.
+- **Shopping Cart**: Client-side cart persistence with instant price calculations.
+- **Favorites**: Bookmark favorite items with single-click add/remove.
+- **Admin Dashboard**: Full CRUD management for dessert products and registered users.
 
 ## Technologies Used
 
-- **Client**: Vanilla JavaScript, HTML, CSS, TailwindCSS
-- **Server**: Node.js, Express, MongoDB, Mongoose, JWT, bcrypt
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for review.
+- **Client**: Vanilla JavaScript (ES Modules), HTML5, TailwindCSS, Vite.
+- **Server**: Node.js, Express, MongoDB, Mongoose, JWT, bcryptjs.
 
 ## License
 
