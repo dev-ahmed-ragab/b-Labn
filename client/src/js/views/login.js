@@ -107,7 +107,7 @@ export default () => /*html*/ `
   </div>
 `;
 
-const rawApi = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
+const rawApi = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_BASE_URL) || 'http://localhost:5000';
 const api = `${rawApi.replace(/\/+$/, '')}/api/auth`;
 
 function showAlert(message, isError = true) {

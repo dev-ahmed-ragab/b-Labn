@@ -48,7 +48,7 @@ export default () => /*html*/ `
 `;
 
 let products = [];
-const rawApi = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
+const rawApi = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_BASE_URL) || 'http://localhost:5000';
 const api = rawApi.replace(/\/+$/, '');
 
 function getFavorites() {

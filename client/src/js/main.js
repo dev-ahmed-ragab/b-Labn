@@ -144,7 +144,8 @@ export function navigateTo(url) {
 
 // دالة التوجيه الرئيسية
 export async function router() {
-  const currentPath = location.pathname;
+  const rawPath = location.pathname;
+  const currentPath = rawPath.replace(/\/+$/, '') || '/';
   let view = routes[currentPath];
 
   if (!view) {
@@ -155,7 +156,17 @@ export async function router() {
   document.title = view.title;
   const appContainer = document.getElementById('app');
   if (appContainer) {
-    appContainer.innerHTML = view.render();
+    try {
+      appContainer.innerHTML = view.render();
+    } catch (renderError) {
+      console.error(`Error rendering view for ${currentPath}:`, renderError);
+      appContainer.innerHTML = `
+        <div class="py-20 text-center text-red-600">
+          <p class="text-3xl mb-2">⚠️</p>
+          <p class="font-bold">حدث خطأ أثناء عرض الصفحة.</p>
+        </div>
+      `;
+    }
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -202,25 +213,34 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// أزرار تسجيل الخروج في النافبار
-const logoutBtn = document.getElementById('logout-btn');
-if (logoutBtn) logoutBtn.addEventListener('click', handleGlobalLogout);
+function setupGlobalListeners() {
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) logoutBtn.onclick = handleGlobalLogout;
 
-const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
-if (mobileLogoutBtn) mobileLogoutBtn.addEventListener('click', handleGlobalLogout);
+  const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+  if (mobileLogoutBtn) mobileLogoutBtn.onclick = handleGlobalLogout;
 
-// زر القائمة في الشاشات الصغيرة
-const menuBtn = document.getElementById('menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
-if (menuBtn && mobileMenu) {
-  menuBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-  });
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuBtn && mobileMenu) {
+    menuBtn.onclick = () => {
+      mobileMenu.classList.toggle('hidden');
+    };
+  }
 }
 
 // ربط أحداث المتصفح
 window.addEventListener('popstate', router);
-window.addEventListener('DOMContentLoaded', () => {
+
+function boot() {
+  setupGlobalListeners();
   updateNavbarAuth();
   router();
-});
+}
+
+// ضمان التشغيل الفوري حتى لو كان الـ DOM جاهزاً بالفعل
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
